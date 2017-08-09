@@ -1129,12 +1129,20 @@ PROTECT(f = allocVector(REALSXP,ssize));
    return(f);
 }
 
-const char *SpectrumUnfolding(double *source,
-                                               const double **respMatrix,
-                                               int ssizex, int ssizey,
-                                               int numberIterations,
-                                               int numberRepetitions, double boost)
+SEXP R_SpectrumUnfolding(SEXP R_source,
+                         SEXP R_respMatrix,
+                         SEXP R_numberIterations,
+                         SEXP R_numberRepetitions,
+                         SEXP R_boost)
 {
+   double *source = REAL(R_source);
+   R_respMatrix = coerceVector(R_respMatrix, REALSXP);
+   int ssizex = LENGTH(R_source);
+   int ssizey = INTEGER(getAttrib(R_respMatrix, R_DimSymbol))[1];
+   int numberIterations = INTEGER(R_numberIterations)[0];
+   int numberRepetitions = INTEGER(R_numberRepetitions)[0];
+   double boost = REAL(R_boost)[0];
+   SEXP f;
 /////////////////////////////////////////////////////////////////////////////
 //        ONE-DIMENSIONAL UNFOLDING FUNCTION
 //        This function unfolds source spectrum
@@ -1153,11 +1161,11 @@ const char *SpectrumUnfolding(double *source,
    int i, j, k, lindex, lhx = 0, repet;
    double lda, ldb, ldc, area;
    if (ssizex <= 0 || ssizey <= 0)
-      return "Wrong Parameters";
+      Rf_error("Wrong Parameters");
    if (ssizex < ssizey)
-      return "Sizex must be greater than sizey)";
+      Rf_error("Sizex must be greater than sizey");
    if (numberIterations <= 0)
-      return "Number of iterations must be positive";
+      Rf_error("Number of iterations must be positive");
    double working_space[ssizex * ssizey + 2 * ssizey * ssizey + 4 * ssizex];
 
 /*read response matrix*/
@@ -1165,7 +1173,7 @@ const char *SpectrumUnfolding(double *source,
       area = 0;
       lhx = -1;
       for (i = 0; i < ssizex; i++) {
-         lda = respMatrix[j][i];
+         lda = REAL(R_respMatrix)[j + ssizey * i];
          if (lda != 0) {
             lhx = i + 1;
          }
@@ -1178,7 +1186,7 @@ const char *SpectrumUnfolding(double *source,
       }
    }
    if (lhx == -1)
-      return ("ZERO COLUMN IN RESPONSE MATRIX");
+      Rf_error("ZERO COLUMN IN RESPONSE MATRIX");
 
 /*read source vector*/
    for (i = 0; i < ssizex; i++)
@@ -1280,14 +1288,16 @@ const char *SpectrumUnfolding(double *source,
    }
 
 /*write back resulting spectrum*/
+   PROTECT(f = allocVector(REALSXP, ssizex));
    for (i = 0; i < ssizex; i++) {
       if (i < ssizey)
-         source[i] = working_space[ssizex * ssizey + 2 * ssizey * ssizey + i];
+         REAL(f)[i] = working_space[ssizex * ssizey + 2 * ssizey * ssizey + i];
 
       else
-         source[i] = 0;
+         REAL(f)[i] = 0;
    }
-   return 0;
+   UNPROTECT(1);
+   return(f);
 }
 
 SEXP R_SpectrumSearchHighRes(SEXP R_source,

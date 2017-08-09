@@ -64,3 +64,14 @@ SpectrumSearch <-  function(y,sigma=3.0,threshold=10.0,background=FALSE,iteratio
      )
   return(p)
 }
+
+SpectrumUnfolding <- function(y, response, iterations = 10, repetitions = 1, boost = 1.0) {
+  p <- .Call("R_SpectrumUnfolding",
+             as.vector(y),
+             as.matrix(response),
+             as.integer(iterations),
+             as.integer(repetitions),
+             as.numeric(boost),
+             PACKAGE = "Peaks")
+  return (p)
+}
