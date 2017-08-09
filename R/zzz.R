@@ -24,7 +24,7 @@ SpectrumSmoothMarkov <- function(y,window=3){
      )
   return(p)
 }
-  
+
 SpectrumDeconvolution <- function(y,response,iterations=10,repetitions=1,boost=1.0,method=c("Gold","RL")){
   method <- match.arg(method)
   if (length(as.vector(response))<length(as.vector(y))){
