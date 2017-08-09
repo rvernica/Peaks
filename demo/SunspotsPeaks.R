@@ -3,6 +3,7 @@ library(datasets)
 library(Peaks)
 library(stats)
 library(graphics)
+Peaks:::.First.lib(dirname(find.package("Peaks")), "Peaks")
 abs(fft(spec.taper(as.vector(sunspot.month),p=0.5)))->smf
 SpectrumBackground(smf,iterations=100)->smb
 plot(smf-smb,type="l",xlim=c(0,200))

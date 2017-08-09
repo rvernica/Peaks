@@ -3,6 +3,7 @@ library(datasets)
 library(Peaks)
 library(stats)
 library(graphics)
+Peaks:::.First.lib(dirname(find.package("Peaks")), "Peaks")
 #Generate spectrum
 abs(fft(spec.taper(as.vector(sunspot.month),p=0.5)))->smf
 #Remove background
