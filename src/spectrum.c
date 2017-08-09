@@ -195,7 +195,7 @@ SEXP R_SpectrumBackground(SEXP R_spectrum,
             i+=1;
          else if(direction == kBackDecreasingWindow)
             i-=1;
-      }while(direction == kBackIncreasingWindow && i <= numberIterations || direction == kBackDecreasingWindow && i >= 1);
+      }while((direction == kBackIncreasingWindow && i <= numberIterations) || (direction == kBackDecreasingWindow && i >= 1));
    }
 
    else if (filterOrder == kBackOrder4) {
@@ -294,7 +294,7 @@ SEXP R_SpectrumBackground(SEXP R_spectrum,
             i+=1;
          else if(direction == kBackDecreasingWindow)
             i-=1;
-      }while(direction == kBackIncreasingWindow && i <= numberIterations || direction == kBackDecreasingWindow && i >= 1);
+      }while((direction == kBackIncreasingWindow && i <= numberIterations) || (direction == kBackDecreasingWindow && i >= 1));
    }
 
    else if (filterOrder == kBackOrder6) {
@@ -455,7 +455,7 @@ SEXP R_SpectrumBackground(SEXP R_spectrum,
             i+=1;
          else if(direction == kBackDecreasingWindow)
             i-=1;
-      }while(direction == kBackIncreasingWindow && i <= numberIterations || direction == kBackDecreasingWindow && i >= 1);
+      }while((direction == kBackIncreasingWindow && i <= numberIterations) || (direction == kBackDecreasingWindow && i >= 1));
    }
 
    else if (filterOrder == kBackOrder8) {
@@ -696,7 +696,7 @@ SEXP R_SpectrumBackground(SEXP R_spectrum,
             i += 1;
          else if(direction == kBackDecreasingWindow)
             i -= 1;
-      }while(direction == kBackIncreasingWindow && i <= numberIterations || direction == kBackDecreasingWindow && i >= 1);
+      }while((direction == kBackIncreasingWindow && i <= numberIterations) || (direction == kBackDecreasingWindow && i >= 1));
    }
 
    if (compton == TRUE) {
